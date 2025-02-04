@@ -1,0 +1,35 @@
+start : agt
+
+agt : "Agt" "{" sect "}"
+
+sect : prjsect* sensect* tgtsect*
+
+prjsect  : "PrjSect" "{" (scenario | name | keyword)+ "}"
+scenario : "Scenario" ESCAPED_STRING
+name     : "Name" ESCAPED_STRING
+keyword  : "Keyword" ESCAPED_STRING
+
+sensect : "SenSect" "{" name* senupd+ "}" 
+senupd  : "SenUpd" "{" (comment | fov | time | elevation | keyword | azimuth | range)* "}"
+fov     : "Fov" FLOAT FLOAT
+time    : "Time" INT INT INT INT INT INT
+elevation: "Elevation" SIGNED_FLOAT
+azimuth: "Azimuth" SIGNED_FLOAT
+
+tgtsect : "TgtSect" "{" tgtupd+ "}"
+tgtupd  : "TgtUpd" "{" (comment | keyword | time | tgt)* "}"
+comment : "Comment" ESCAPED_STRING
+tgt     : "Tgt" "{" (keyword | range | tgttype | plyid | pixloc | aspect)* "}"
+range   : "Range" FLOAT
+tgttype : "TgtType" ESCAPED_STRING
+plyid   : "PlyId" ESCAPED_STRING
+pixloc  : "PixLoc" INT INT
+aspect  : "Aspect" FLOAT
+
+%import common.ESCAPED_STRING  
+%import common.FLOAT 
+%import common.INT
+%import common.SIGNED_FLOAT
+%import common.WORD
+%import common.WS
+%ignore WS
